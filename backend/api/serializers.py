@@ -2,8 +2,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import (IntegerField, ModelSerializer,
-                                        PrimaryKeyRelatedField,
-                                        SerializerMethodField)
+                                        PrimaryKeyRelatedField)
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from core.constants import (MAX_AMOUNT, MAX_COOKING_TIME, MIN_AMOUNT,
