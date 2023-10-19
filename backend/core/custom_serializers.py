@@ -1,15 +1,6 @@
 from django.db.models import F
 
 
-def get_is_subscribed(self, obj):
-    user = self.context['request'].user
-    if user.is_anonymous:
-        return False
-    return (
-        user.subscriber_user.filter(author=obj).exists()
-    )
-
-
 def get_recipes_count(self, obj):
     return obj.recipe_author.count()
 

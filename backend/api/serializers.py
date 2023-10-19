@@ -2,14 +2,15 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import (IntegerField, ModelSerializer,
-                                        PrimaryKeyRelatedField)
+                                        PrimaryKeyRelatedField,
+                                        SerializerMethodField)
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from core.constants import (MAX_AMOUNT, MAX_COOKING_TIME, MIN_AMOUNT,
                             MIN_COOKING_TIME)
 from core.custom_serializers import (get_ingredients, get_is_favorited,
                                      get_is_in_shopping_cart,
-                                     get_is_subscribed, get_recipes,
+                                     get_recipes,
                                      get_recipes_count)
 from recipes.models import (Cart, Ingredient, Recipe, RecipeIngredientAmount,
                             Tag)
@@ -62,7 +63,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 class CustomUserSerializer(UserSerializer):
     """Кастомный сериализатор от джосер"""
 
-    is_subscribed = get_is_subscribed
+    is_subscribed = SerializerMethodField()
 
     class Meta:
         model = User
@@ -73,6 +74,14 @@ class CustomUserSerializer(UserSerializer):
             'first_name',
             'last_name',
             'is_subscribed',
+        )
+
+    def get_is_subscribed(self, obj):
+        user = self.context['request'].user
+        if user.is_anonymous:
+            return False
+        return (
+            user.subscriber_user.filter(author=obj).exists()
         )
 
 
