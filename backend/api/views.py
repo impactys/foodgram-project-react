@@ -126,11 +126,11 @@ class RecipeViewSet(ModelViewSet):
             serializer = IndexSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            Delete_favorite = FavoriteRecipe.objects.filter(
+            delete_favorite = FavoriteRecipe.objects.filter(
                 user=self.request.user,
                 recipe__id=pk)
-            if Delete_favorite.exists():
-                Delete_favorite.delete()
+            if delete_favorite.exists():
+                delete_favorite.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
                 {"errors": "Вы уже удалили этот рецепт!"},
@@ -160,11 +160,11 @@ class RecipeViewSet(ModelViewSet):
             serializer = IndexSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            Delete_Cart = Cart.objects.filter(
+            delete_Cart = Cart.objects.filter(
                 user=self.request.user,
                 recipe__id=pk)
-            if Delete_Cart.exists():
-                Delete_Cart.delete()
+            if delete_Cart.exists():
+                delete_Cart.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
                 {"errors": "Вы уже удалили этот рецепт!"},

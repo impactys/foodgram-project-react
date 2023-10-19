@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
-from core import constants
+from django.conf import settings
 
 User = get_user_model()
 
@@ -14,17 +14,17 @@ class Tag(models.Model):
 
     name = models.CharField(
         verbose_name='Название',
-        max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
+        max_length=settings.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
         unique=True,
     )
     color = ColorField(
         verbose_name='Цвет в HEX',
-        max_length=constants.MAX_TAG_COLOR_LENGHT,
+        max_length=settings.MAX_TAG_COLOR_LENGHT,
         unique=True
     )
     slug = models.SlugField(
         verbose_name='Ссылка',
-        max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
+        max_length=settings.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
         unique=True,
     )
 
@@ -36,14 +36,14 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     """Модель для ингредиента."""
-
     name = models.CharField(
+        db_index=True,
         verbose_name='Название ингредиента',
-        max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
+        max_length=settings.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
     )
     measurement_unit = models.CharField(
         verbose_name='Единицы измерения',
-        max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
+        max_length=settings.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
     )
 
     class Meta:
@@ -72,7 +72,7 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         verbose_name='Название блюда',
-        max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
+        max_length=settings.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
     )
     image = models.ImageField(
         verbose_name='Картинка',
@@ -95,10 +95,10 @@ class Recipe(models.Model):
         verbose_name='Время готовки',
         validators=(
             MinValueValidator(
-                constants.MIN_COOKING_TIME
+                settings.MIN_COOKING_TIME
             ),
             MaxValueValidator(
-                constants.MAX_COOKING_TIME
+                settings.MAX_COOKING_TIME
             )
         )
     )
@@ -129,10 +129,10 @@ class RecipeIngredientAmount(models.Model):
         verbose_name='Количество',
         validators=(
             MinValueValidator(
-                constants.MIN_AMOUNT
+                settings.MIN_AMOUNT
             ),
             MaxValueValidator(
-                constants.MAX_AMOUNT
+                settings.MAX_AMOUNT
             )
         )
     )

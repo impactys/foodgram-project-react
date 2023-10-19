@@ -1,17 +1,17 @@
 from rest_framework import pagination
 
-from core.constants import limit_pag, limit_pag_size
+from django.conf import settings
 
 
 class CustomPagination(pagination.PageNumberPagination):
-    page_size = limit_pag_size
+    page_size = settings.LIMIT_PAG_SIZE
     page_query_param = 'page'
     page_size_query_param = 'limit'
-    max_page_size = limit_pag
+    max_page_size = settings.LIMIT_PAG
 
 
 class CartPagination(pagination.LimitOffsetPagination):
-    default_limit = limit_pag
+    default_limit = settings.LIMIT_PAG
     page_query_param = 'page'
     page_size_query_param = 'limit'
-    max_limit = limit_pag
+    max_limit = settings.LIMIT_PAG

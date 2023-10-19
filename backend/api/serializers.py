@@ -7,8 +7,7 @@ from rest_framework.serializers import (IntegerField, ModelSerializer,
                                         SerializerMethodField)
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
-from core.constants import (MAX_AMOUNT, MAX_COOKING_TIME, MIN_AMOUNT,
-                            MIN_COOKING_TIME)
+from django.conf import settings
 from recipes.models import (Cart, Ingredient, Recipe, RecipeIngredientAmount,
                             Tag)
 from users.models import User
@@ -75,11 +74,8 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
-        if user.is_anonymous:
-            return False
-        return (
-            user.subscriber_user.filter(author=obj).exists()
-        )
+        return (not user.is_anonymous and user.subscriber_user.filter(
+            author=obj).exists())
 
 
 class SubscriptionSerializer(CustomUserSerializer):
@@ -159,7 +155,8 @@ class RecipeIngredientAmountSerializer(ModelSerializer):
     """Сериализатор игредиента в рецепте."""
 
     id = IntegerField(write_only=True)
-    amount = IntegerField(min_value=MIN_AMOUNT, max_value=MAX_AMOUNT)
+    amount = IntegerField(min_value=settings.MIN_AMOUNT,
+                          max_value=settings.MAX_AMOUNT)
 
     class Meta:
         model = RecipeIngredientAmount
@@ -229,8 +226,8 @@ class WriteRecipeSerializer(ModelSerializer):
     image = Base64ImageField()
     author = CustomUserSerializer(read_only=True)
     cooking_time = IntegerField(
-        min_value=MIN_COOKING_TIME,
-        max_value=MAX_COOKING_TIME
+        min_value=settings.MIN_COOKING_TIME,
+        max_value=settings.MAX_COOKING_TIME
     )
 
     def empty_field(self, field, value):

@@ -4,6 +4,24 @@
 
 Автор: Илья Корытов (https://github.com/impactys)
 
+ilyafood.bounceme.net
+
+Сервер
+-login: yc-user
+-passphrase: NRjeSf
+-ip: 158.160.77.156
+
+Тестовый пользователь
+-maks@mail.ru
+-Maks2023
+
+Админ
+-Электронная почта: admin@mail.ru
+Ник: Admin
+Имя: Админ
+Фамилия: Админ
+Password: admin
+
 ### Клонирование проекта
 
 Для клонирования проекта вы можете воспользоваться ссылкой: git@github.com:impactys/foodgram-project-react.git

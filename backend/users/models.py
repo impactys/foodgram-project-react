@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from core import constants, validators
+from core import validators
+from django.conf import settings
 
 
 class User(AbstractUser):
@@ -9,27 +10,27 @@ class User(AbstractUser):
 
     email = models.EmailField(
         verbose_name='Электронная почта',
-        max_length=constants.MAX_EMAEL_LENGHT,
+        max_length=settings.MAX_EMAEL_LENGHT,
         unique=True,
     )
     username = models.CharField(
         verbose_name='Ник',
-        max_length=constants.MAX_USER_LENGHT,
+        max_length=settings.MAX_USER_LENGHT,
         unique=True,
         validators=(
             validators.validate_username,)
     )
     first_name = models.CharField(
         verbose_name='Имя',
-        max_length=constants.MAX_USER_LENGHT,
+        max_length=settings.MAX_USER_LENGHT,
     )
     last_name = models.CharField(
         verbose_name='Фамилия',
-        max_length=constants.MAX_USER_LENGHT,
+        max_length=settings.MAX_USER_LENGHT,
     )
     password = models.CharField(
         verbose_name='Пароль',
-        max_length=constants.MAX_USER_LENGHT,
+        max_length=settings.MAX_USER_LENGHT,
 
     )
     USERNAME_FIELD = 'email'
