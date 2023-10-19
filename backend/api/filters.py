@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django_filters.rest_framework import FilterSet, filters
 
 from recipes.models import Ingredient, Recipe, Tag
@@ -12,21 +13,23 @@ def get_queryset_filter(queryset, user, value, relation):
 
 
 class IngredientFilter(FilterSet):
-
-    name = filters.CharFilter(
-        field_name='name',
-        lookup_expr='istartswith',
-    )
+    """Фильтрация ингредиентов по названию"""
+    name = filters.CharFilter(method='ingredient_name_filter')
 
     class Meta:
         model = Ingredient
         fields = ('name',)
 
+    def ingredient_name_filter(self, queryset, name, value):
+        return queryset.filter(
+            Q(name__startswith=value) | Q(name__contains=value)
+        )
+
 
 class RecipeFilter(FilterSet):
-
+    """Фильтрация рецептов"""
     is_favorited = filters.BooleanFilter(method='is_favorited_filter')
-    is_in_shopping_list = filters.BooleanFilter(
+    is_in_shopping_cart = filters.BooleanFilter(
         method='is_in_shopping_cart_filter'
     )
     tags = filters.ModelMultipleChoiceFilter(
@@ -37,24 +40,20 @@ class RecipeFilter(FilterSet):
 
     class Meta:
         model = Recipe
-        fields = (
-            'tags',
-            'author',
-            'is_favorited',
-            'is_in_shopping_cart',
-        )
+        fields = ('tags', 'author',)
 
     def is_favorited_filter(self, queryset, name, value):
-        if value:
-            return queryset.filter(favorites__user=self.request.user)
-        return queryset.exclude(
-            favorites__user=self.request.user
+        return get_queryset_filter(
+            queryset=queryset,
+            user=self.request.user,
+            value=value,
+            relation='favorites__user'
         )
 
     def is_in_shopping_cart_filter(self, queryset, name, value):
-        if value:
-            return Recipe.objects.filter(
-                shopping_cart__user=self.request.user
-            )
-        else:
-            return False
+        return get_queryset_filter(
+            queryset=queryset,
+            user=self.request.user,
+            value=value,
+            relation='shopping_cart__user'
+        )
