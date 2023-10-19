@@ -1,5 +1,4 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator
 from django.db import models
 
 from core import constants, validators
@@ -18,22 +17,15 @@ class User(AbstractUser):
         max_length=constants.MAX_USER_LENGHT,
         unique=True,
         validators=(
-            validators.validate_username,
-            MinValueValidator(constants.MIN_TEXT_LENGHT))
+            validators.validate_username,)
     )
     first_name = models.CharField(
         verbose_name='Имя',
         max_length=constants.MAX_USER_LENGHT,
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        )
     )
     last_name = models.CharField(
         verbose_name='Фамилия',
         max_length=constants.MAX_USER_LENGHT,
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        )
     )
     password = models.CharField(
         verbose_name='Пароль',
@@ -60,9 +52,6 @@ class User(AbstractUser):
                 name='unique_username_email',
             ),
         )
-
-    def __str__(self):
-        return self.username
 
 
 class Subscription(models.Model):
