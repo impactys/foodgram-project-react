@@ -1,7 +1,5 @@
 from django.db.models import F
 
-from api.serializers import IndexSerializer
-
 
 def get_is_subscribed(self, obj):
     user = self.context['request'].user
@@ -17,6 +15,7 @@ def get_recipes_count(self, obj):
 
 
 def get_recipes(self, obj):
+    from api.serializers import IndexSerializer
     request = self.context['request']
     recipes_limit = request.GET.get('recipes_limit')
     recipes = obj.recipe_author.all()
