@@ -174,9 +174,9 @@ class ReadRecipeSerializer(ModelSerializer):
 
     author = CustomUserSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    is_favorited = SerializerMethodField
-    is_in_shopping_cart = SerializerMethodField
-    ingredients = SerializerMethodField
+    is_favorited = SerializerMethodField()
+    is_in_shopping_cart = SerializerMethodField()
+    ingredients = SerializerMethodField()
 
     class Meta:
         model = Recipe
