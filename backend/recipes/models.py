@@ -16,9 +16,6 @@ class Tag(models.Model):
         verbose_name='Название',
         max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
         unique=True,
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        )
     )
     color = ColorField(
         verbose_name='Цвет в HEX',
@@ -29,9 +26,6 @@ class Tag(models.Model):
         verbose_name='Ссылка',
         max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
         unique=True,
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        )
     )
 
     class Meta:
@@ -46,17 +40,10 @@ class Ingredient(models.Model):
     name = models.CharField(
         verbose_name='Название ингредиента',
         max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        ),
     )
     measurement_unit = models.CharField(
         verbose_name='Единицы измерения',
         max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
-        validators=(
-            MinValueValidator(
-                constants.MIN_MEASUREMENT_UNIT_LENGHT),)
-
     )
 
     class Meta:
@@ -86,9 +73,6 @@ class Recipe(models.Model):
     name = models.CharField(
         verbose_name='Название блюда',
         max_length=constants.MAX_NAME_SLUG_MEASUREMENT_UNIT_LENGHT,
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        ),
     )
     image = models.ImageField(
         verbose_name='Картинка',
@@ -96,9 +80,6 @@ class Recipe(models.Model):
     )
     text = models.TextField(
         verbose_name='Описание',
-        validators=(
-            MinValueValidator(constants.MIN_TEXT_LENGHT),
-        ),
     )
     ingredients = models.ManyToManyField(
         Ingredient,
