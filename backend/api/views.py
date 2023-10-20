@@ -160,11 +160,11 @@ class RecipeViewSet(ModelViewSet):
             serializer = IndexSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            delete_Cart = Cart.objects.filter(
+            delete_cart = Cart.objects.filter(
                 user=self.request.user,
                 recipe__id=pk)
-            if delete_Cart.exists():
-                delete_Cart.delete()
+            if delete_cart.exists():
+                delete_cart.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
                 {"errors": "Вы уже удалили этот рецепт!"},
